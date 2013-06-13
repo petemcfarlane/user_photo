@@ -52,5 +52,7 @@ if ($image->valid() && $thumb) {
 if (!$image->valid()) {
 	//getStandardImage();
 }
+OCP\Response::enableCaching();
+
 header('Content-Type: '.$image->mimeType());
 $image->show();
