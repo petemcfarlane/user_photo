@@ -1,58 +1,33 @@
-var UserPhoto = {
-
-	Load : function(path) {
-		var data = $.post(OC.filePath('user_photo', 'ajax', 'addphoto.php'), {
-			path : path
-		}, function(result) {
-			if (result.status == 'success') {
-				document.getElementById('photoimg').src = OC.filePath('user_photo', 'ajax', 'showphoto.php') +'?user=' + result.data.user;
-				OC.dialogs.info(result.data.message, 'User Photo');
-			} else {
-				OC.dialogs.info(result.data.message, 'An error occurred!');
-			}
-		});
-	},
-
-	Delete : function(path) {
-		var data = $.post(OC.filePath('user_photo', 'ajax', 'deletephoto.php'), {
-			path : path
-		}, function(result) {
-			if (result.status == 'success') {
-				document.getElementById('photoimg').src = OC.filePath('user_photo', 'ajax', 'showphoto.php') +'?user=' + result.data.user;
-				OC.dialogs.alert(result.data.message, 'User Photo');
-			} else {
-				OC.dialogs.alert(result.data.message, 'An error occurred!');
-			}
-		});
-	},
-	Gravitar : function(path) {
-		var data = $.post(OC.filePath('user_photo', 'ajax', 'gravitar.php'), {
-			path : path
-		}, function(result) {
-			if (result.status == 'success') {
-				document.getElementById('photoimg').src = OC.filePath('user_photo', 'ajax', 'showphoto.php') +'?user=' + result.data.user;
-				OC.dialogs.alert(result.data.message, 'User Photo');
-			} else {
-				OC.dialogs.alert(result.data.message, 'An error occurred!');
-			}
-		});
-	},
-}
-
 $(document).ready(function() {
-	$("#chosephotobutton").click(function() {
-		OC.dialogs.filepicker('Select the Image', UserPhoto.Load, false, 'image', true);
-		return false;
+	
+	$("#upload_photo").on('change', function() {
+		if (window.FormData !== undefined) {
+			var file = $('#upload_photo')[0].files[0];
+			var data = new FormData(document.getElementById('photoform'));
+			$.ajax({
+				url: OC.filePath('user_photo','ajax','addphoto.php'), 
+				type: "POST", 
+				data: data, 
+				dataType: 'json',
+				processData: false,
+				contentType: false,
+				success: function(data){
+					d = new Date();
+					$(".photoimg").attr("src", OC.filePath('user_photo', null, 'photo.php') + "?uid=" + data.uid + "&thumb=140&" + d.getTime() );
+				}
+			});
+		}
 	});
-	$("#delphotobutton").click(function() {
-		UserPhoto.Delete();
-		return false;
-	});
-	$("#usegravitarbutton").click(function() {
 
-		UserPhoto.Gravitar();
-		return false;
+	
+	$("#delphotobutton").click(function(e) {
+		e.preventDefault();
+		$.post(OC.filePath('user_photo', 'ajax', 'deletephoto.php'), function (data) {
+			if (data.deleted) {
+				d = new Date();
+				$(".photoimg").attr("src", OC.filePath('user_photo', null, 'photo.php') + "?uid=" + data.uid + "&thumb=140&" + d.getTime() );
+			}
+		}, 'json');
 	});
-
 
 }); 

@@ -25,16 +25,25 @@ OCP\JSON::checkLoggedIn();
 OCP\JSON::checkAppEnabled('user_photo');
 OCP\JSON::callCheck();
 
-$path = OC_Util::sanitizeHTML($_POST['path']) ;
 
-if (!empty($path)) {
-    if (OC_Filesystem::is_file($path)) {
-        OC_Preferences::setValue( OCP\USER::getUser() , 'photo', 'path', $path );
-        OCP\JSON::success(array('data' => array( 'webROOT' => OC::$WEBROOT , 'user' => OCP\USER::getUser() , 'message' => 'The photo has been updated' )));
-    } else {
-        OCP\JSON::error(array('data' => array( 'message' => 'Invalid file path supplied.')));
-    }
 
-} else {
-    OCP\JSON::error(array('data' => array( 'message' => 'Invalid file path supplied.')));
+if (isset ($_FILES['user_photo'])) {
+	$file = $_FILES['user_photo'];
+	$uid = OC_User::getUser();
+	
+	if(file_exists($file['tmp_name'])) {
+		$image = new OC_Image();
+		if($image->loadFromFile($file['tmp_name'])) {
+			if($image->width() > 400 || $image->height() > 400) {
+				$image->resize(400); // Prettier resizing than with browser and saves bandwidth.
+			}
+			$type = $image->mimeType();
+			$string = $image->__toString();
+			OC_Preferences::setValue( $uid , 'user_photo', 'photo', $string );
+			OCP\JSON::success(array("uid" => $uid));
+			exit();
+		}
+	}
+	exit;
 }
+  

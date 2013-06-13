@@ -1,14 +1,21 @@
-#whoshare p {
-	float: left;
-	padding-top: 0.8em;
-	padding-left: 1.2em;
+.photoimg {border-radius: 50%;}
+.tag {
+	width: auto;
+	padding: .4em;
+	background-color: rgba(240, 240, 240, .9);
+	font-weight: bold;
+	color: #555;
+	text-shadow: rgba(255, 255, 255, .9) 0 1px 0;
+	border: 1px solid rgba(190, 190, 190, .9);
+	cursor: pointer;
+	-moz-box-shadow: 0 1px 1px rgba(255,255,255,.9), 0 1px 1px rgba(255,255,255,.9) inset;
+	-webkit-box-shadow: 0 1px 1px rgba(255, 255, 255, .9), 0 1px 1px rgba(255, 255, 255, .9) inset;
+	box-shadow: 0 1px 1px rgba(255, 255, 255, .9), 0 1px 1px rgba(255, 255, 255, .9) inset;
+	-moz-border-radius: .5em;
+	-webkit-border-radius: .5em;
+	border-radius: .5em;
 }
-
-#photoform img  {
-	width: 128px;
-	height: 128px;
-	background: transparent url('apps/user_photo/img/pattern.png');
-	border: 1px solid #D8D8D8;
-	margin-top: 1em;
-	padding: 5px;
+.tag:hover {
+	background-color: rgba(250, 250, 250, .9);
+	color: #333;
 }

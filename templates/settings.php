@@ -1,11 +1,10 @@
-<form id="photoform">
+<form id="photoform" method="post" enctype="multipart/form-data">
     <fieldset class="personalblock">
-        <strong>User Photo</strong><br />
-        <img id="photoimg" src="<?php echo OC_App::getAppWebPath('user_photo') . '/ajax/showphoto.php?user=' .  $_['user'] ; ?>">
+        <legend><strong>User Photo</strong></legend>
+        <img class="photoimg" src="<?php p( OCP\Util::linkTo( 'user_photo', 'photo.php' ) . "?uid=$_[user]&thumb=140" ); ?>">
         <br>
-        <input id="chosephotobutton" type="submit" value="Change Photo" original-title>
-        <input id="delphotobutton" type="submit" value="Delete Photo" original-title>
-		<input id="usegravitarbutton" type="submit" value="Use Gravitar" original-title>
-
+        <label for="upload_photo" class="tag">Upload New Photo</label>
+		<input class="hidden" type="file" name="user_photo" id="upload_photo" accept="image/*" />
+        <button id="delphotobutton">Delete Photo</button>
     </fieldset>
 </form>
