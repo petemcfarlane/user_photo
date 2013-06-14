@@ -23,7 +23,7 @@ $(document).ready(function() {
 				contentType: false,
 				success: function(data){
 					d = new Date();
-					$(".photoimg").attr("src", OC.filePath('user_photo', null, 'photo.php') + "?uid=" + data.uid + "&thumb=140&" + d.getTime() );
+					$(".photoimg").attr("src", OC.filePath('user_photo', null, 'index.php') + "/photo/" + data.uid + "/140&" + d.getTime() );
 				}
 			});
 		}
@@ -35,7 +35,7 @@ $(document).ready(function() {
 		$.post(OC.filePath('user_photo', 'ajax', 'deletephoto.php'), function (data) {
 			if (data.deleted) {
 				d = new Date();
-				$(".photoimg").attr("src", OC.filePath('user_photo', null, 'photo.php') + "?uid=" + data.uid + "&thumb=140&" + d.getTime() );
+					$(".photoimg").attr("src", OC.filePath('user_photo', null, 'index.php') + "/photo/" + data.uid + "/140&" + d.getTime() );
 			}
 		}, 'json');
 	});

@@ -20,8 +20,9 @@ function getStandardImage() {
 	exit;
 }
 
-$uid = isset($_GET['uid']) ? $_GET['uid'] : null;
-$thumb = isset($_GET['thumb']) ? $_GET['thumb'] : null;
+$uid = isset($params['uid'] ) ? $params['uid'] : NULL; 
+$etag = NULL;
+$thumb = isset($params['thumb'] ) ? $params['thumb'] : NULL; 
 $encoded_image = OC_Preferences::getValue($uid, 'user_photo', 'photo');
 
 if(!$uid || $uid === 'new') {
@@ -50,9 +51,12 @@ if ($image->valid() && $thumb) {
 }
 
 if (!$image->valid()) {
-	//getStandardImage();
+	getStandardImage();
 }
-OCP\Response::enableCaching();
 
+OCP\Response::enableCaching();
+OCP\Response::setExpiresHeader('P1D');
+$etag = md5($encoded_image);
+OCP\Response::setETagHeader($etag);
 header('Content-Type: '.$image->mimeType());
 $image->show();
